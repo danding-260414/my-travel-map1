@@ -1,10 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的旅行地图</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { height: 100vh; width: 100%; }
+        .title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: sans-serif;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
 <body>
-    <h1>我的旅行地图</h1>
-    <p>这里会显示我的旅行足迹！</p>
+    <div class="title">我的旅行足迹</div>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 初始化地图（以中国为中心）
+        const map = L.map('map').setView([35.8617, 104.1954], 4);
+
+        // 加载地图瓦片
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 你可以在这里添加自己去过的城市坐标
+        const cities = [
+            { name: "北京", lat: 39.9042, lng: 116.4074, desc: "首都之旅" },
+            { name: "上海", lat: 31.2304, lng: 121.4737, desc: "外滩夜景" },
+            { name: "长沙", lat: 28.2282, lng: 112.9388, desc: "美食打卡" },
+            { name: "昆明", lat: 25.0406, lng: 102.7181, desc: "春城风光" },
+            { name: "青岛", lat: 36.0671, lng: 120.3826, desc: "海边度假" },
+            { name: "威海", lat: 37.5096, lng: 122.1165, desc: "清新小城" }
+        ];
+
+        // 在地图上标记所有城市
+        cities.forEach(city => {
+            L.marker([city.lat, city.lng])
+                .addTo(map)
+                .bindPopup(`<b>${city.name}</b><br>${city.desc}`);
+        });
+    </script>
 </body>
 </html>
